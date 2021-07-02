@@ -6,7 +6,7 @@
         android:label="pharmacie"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBKpESndR_WWR9filbTHe9BLsqu6d4jlLY"/>
+            android:value="AIzaSyBaZHYeXE_Bb8_sv7edLHQL_qVHQU-bhDk"/>  
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

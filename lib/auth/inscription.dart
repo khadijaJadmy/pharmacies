@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pharmacie/auth/authentification.dart';
 import 'package:pharmacie/firestore/auth.dart';
 import 'package:pharmacie/model/client.dart';
+import 'package:pharmacie/ui/anotherhome/screens/home/components/body.dart';
 import 'package:pharmacie/ui/home/home.dart';
 import 'package:select_form_field/select_form_field.dart';
 
@@ -15,12 +16,12 @@ class Inscription extends StatefulWidget {
 class _InscriptionState extends State<Inscription> {
   final List<Map<String, dynamic>> _items = [
     {
-      'value': 'client',
+      'value': 'Client',
       'label': 'Client',
       'icon': Icon(Icons.people),
     },
     {
-      'value': 'livreur',
+      'value': 'Livreur',
       'label': 'Livreur',
       'icon': Icon(Icons.school),
       'textStyle': TextStyle(color: Colors.red),
@@ -30,11 +31,16 @@ class _InscriptionState extends State<Inscription> {
   TextEditingController _passwordField = TextEditingController();
   TextEditingController _nameField = TextEditingController();
   TextEditingController _statutField = TextEditingController();
-    TextEditingController _fullnameField = TextEditingController();
-  TextEditingController _phoneField = TextEditingController();  
-TextEditingController _adressField = TextEditingController();
+
+  TextEditingController _fullnameField = TextEditingController();
+  TextEditingController _phoneField = TextEditingController();
+  TextEditingController _adressField = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      _statutField.text = 'Client';
+    });
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -45,7 +51,8 @@ TextEditingController _adressField = TextEditingController();
                   height: 200,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/images/pharmacy.jpg'),
+                          image: NetworkImage(
+                              'https://t4.ftcdn.net/jpg/02/77/54/11/240_F_277541160_F43wshVmxNkzfNoV70qvpl2EMsS7qMov.jpg'),
                           fit: BoxFit.fill)),
                   child: Stack(
                     children: <Widget>[
@@ -92,25 +99,35 @@ TextEditingController _adressField = TextEditingController();
                       //     )
                       //     //),
                       //     ),
-                      Positioned(
-                          child:
-                              // FadeAnimation(1.6,
-                              Container(
-                        margin: EdgeInsets.only(top: 130),
-                        child: Center(
-                          child: Text(
-                            "SignIn",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 35,
-                                fontWeight: FontWeight.w400
-                                ),
-                          ),
-                        ),
-                      )
-                          //),
-                          )
+                      // Positioned(
+                      //     child:
+                      //         // FadeAnimation(1.6,
+
+                      //     //),
+                      //     )
                     ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                    // Color.fromRGBO(155, 178, 161, 1),
+                    Color.fromRGBO(72, 219, 211, 0),
+                    Color.fromRGBO(1, 177, 174, 1),
+                    Color.fromRGBO(72, 219, 211, 0),
+                  ])),
+                  // margin: EdgeInsets.only(top: 130),
+                  child: Center(
+                    child: Text(
+                      "SignIn",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 35,
+                          fontWeight: FontWeight.w400),
+                    ),
                   ),
                 ),
                 Padding(
@@ -129,52 +146,71 @@ TextEditingController _adressField = TextEditingController();
                                   blurRadius: 20.0,
                                   offset: Offset(0, 10))
                             ]),
-                        child: Column(
-                          children: <Widget>[
-                            //          Container(
-                            //   padding: EdgeInsets.all(8.0),
-                            //   decoration: BoxDecoration(
-                            //       border: Border(
-                            //           bottom: BorderSide(
-                            //               color: Colors.grey[100]))),
-                            //   child: TextField(
-                            //     controller: _nameField,
-                            //     decoration: InputDecoration(
-                            //         border: InputBorder.none,
-                            //         hintText: "Name",
-                            //         hintStyle:
-                            //             TextStyle(color: Colors.grey[400])),
-                            //   ),
-                            // ),
-                                    Container(
-                              padding: EdgeInsets.all(8.0),
-                              child: TextField(
-                                controller: _fullnameField,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Full name",
-                                    hintStyle:
-                                        TextStyle(color: Colors.grey[400])),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: <Widget>[
+                              //          Container(
+                              //   padding: EdgeInsets.all(8.0),
+                              //   decoration: BoxDecoration(
+                              //       border: Border(
+                              //           bottom: BorderSide(
+                              //               color: Colors.grey[100]))),
+                              //   child: TextField(
+                              //     controller: _nameField,
+                              //     decoration: InputDecoration(
+                              //         border: InputBorder.none,
+                              //         hintText: "Name",
+                              //         hintStyle:
+                              //             TextStyle(color: Colors.grey[400])),
+                              //   ),
+                              // ),
+                              Container(
+                                padding: EdgeInsets.only(left: 8.0),
+                                child: TextFormField(
+                                  controller: _fullnameField,
+                                  obscureText: false,
+                                  validator: (v) {
+                                    if (v.isValidName) {
+                                      return null;
+                                    } else {
+                                      return 'Veuillez renseigner votre nom';
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "Nom et prénom*",
+                                      // errorText: "Ce champs est obligatoire",
+                                      hintStyle:
+                                          TextStyle(color: Colors.grey[400])),
+                                ),
                               ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      bottom:
-                                          BorderSide(color: Colors.grey[100]))),
-                              child: TextField(
-                                controller: _emailField,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Email",
-                                    hintStyle:
-                                        TextStyle(color: Colors.grey[400])),
+                              Container(
+                                padding: EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            color: Colors.grey[100]))),
+                                child: TextFormField(
+                                  controller: _emailField,
+                                   validator: (v) {
+                                    if (v.isValidEmail) {
+                                      return null;
+                                    } else {
+                                      return 'Veuillez entrer un email valide';
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "Email",
+                                      
+                                      // errorText: "Ce champs est obligatoire",
+                                      hintStyle:
+                                          TextStyle(color: Colors.grey[400])),
+                                ),
                               ),
-                            ),
 
-                            SelectFormField(
+                              SelectFormField(
                                 // controller: _statutField,
                                 initialValue: 'Client',
                                 icon: Icon(Icons.stacked_bar_chart_outlined),
@@ -184,66 +220,87 @@ TextEditingController _adressField = TextEditingController();
                                   print(val);
                                   setState(() {
                                     _statutField.text = val;
+                                    print("STATUT");
+                                    print(val);
                                   });
                                 },
-                                onSaved: (val) {
-                                  setState(() {
-                                    _statutField.text = val;
-                                  });
-                                }
+                              ),
 
-                                // controller: _statutField,
+                              Container(
+                                padding: EdgeInsets.all(8.0),
+                                child: TextFormField(
+                                  controller: _phoneField,
+                                  obscureText: false,
+                                   validator: (v) {
+                                    if (v.isNotNull) {
+                                      return null;
+                                    } else {
+                                      return 'Veuillez entrer un numéro du téléphone valide';
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "Téléphone",
+
+                                      // errorText: "Ce champs est obligatoire",
+                                      hintStyle:
+                                          TextStyle(color: Colors.grey[400])),
                                 ),
-                    
-                            Container(
-                              padding: EdgeInsets.all(8.0),
-                              child: TextField(
-                                controller: _phoneField,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Phone number",
-                                    hintStyle:
-                                        TextStyle(color: Colors.grey[400])),
                               ),
-                            ),
-                                Container(
-                              padding: EdgeInsets.all(8.0),
-                              child: TextField(
-                                controller: _adressField,
-                                obscureText: false,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Adress",
-                                    hintStyle:
-                                        TextStyle(color: Colors.grey[400])),
+                              Container(
+                                padding: EdgeInsets.all(8.0),
+                                child: TextFormField(
+                                  controller: _adressField,
+                                  obscureText: false,
+                                   validator: (v) {
+                                    if (v.isNotNull) {
+                                      return null;
+                                    } else {
+                                      return 'Veuillez renseigner votre adresse';
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "Adresse",
+                                      // errorText: "Ce champs est obligatoire",
+                                      hintStyle:
+                                          TextStyle(color: Colors.grey[400])),
+                                ),
                               ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(8.0),
-                              child: TextField(
-                                controller: _passwordField,
-                                obscureText: true,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Password",
-                                    hintStyle:
-                                        TextStyle(color: Colors.grey[400])),
+                              Container(
+                                padding: EdgeInsets.all(8.0),
+                                child: TextFormField(
+                                  controller: _passwordField,
+                                  obscureText: true,
+                                   validator: (v) {
+                                    if (v.isNotNull) {
+                                      return null;
+                                    } else {
+                                      return 'Veuillez entre un mot de passe valide';
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "Mot de pass",
+                                      // errorText:"Votre mot de passe est très faible",
+                                      hintStyle:
+                                          TextStyle(color: Colors.grey[400])),
+                                ),
                               ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(8.0),
-                              child: TextField(
-                                controller: _passwordField,
-                                obscureText: true,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Confirm password",
-                                    hintStyle:
-                                        TextStyle(color: Colors.grey[400])),
-                              ),
-                            )
-                          ],
+                              Container(
+                                padding: EdgeInsets.all(8.0),
+                                child: TextFormField(
+                                  controller: _passwordField,
+                                  obscureText: true,
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "Confirmer mot de pass",
+                                      hintStyle:
+                                          TextStyle(color: Colors.grey[400])),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
 
@@ -260,8 +317,10 @@ TextEditingController _adressField = TextEditingController();
                               gradient: LinearGradient(colors: [
                                 // Color.fromRGBO(155, 178, 161, 1),
                                 // Color.fromRGBO(155, 178, 161, .6),
-                                      Color.fromRGBO(136, 170, 195,1),
-                                      Color.fromRGBO(212, 234, 248,1),
+                                // Color.fromRGBO(136, 170, 195,1),
+                                // Color.fromRGBO(212, 234, 248,1),
+                                Color.fromRGBO(1, 177, 174, 1),
+                                Color.fromRGBO(1, 177, 174, 1),
                               ])),
                           child: Center(
                               child: Text(
@@ -272,8 +331,16 @@ TextEditingController _adressField = TextEditingController();
                           )),
                         ),
                         onTap: () async {
-                          bool shouldNavigate = await Register(_emailField.text,
-                              _passwordField.text, _statutField.text,_fullnameField.text,_phoneField.text,_adressField.text);
+                          if(_formKey.currentState.validate()) {
+            
+          
+                          bool shouldNavigate = await Register(
+                              _emailField.text,
+                              _passwordField.text,
+                              _statutField.text,
+                              _fullnameField.text,
+                              _phoneField.text,
+                              _adressField.text);
 
                           if (shouldNavigate) {
                             Navigator.push(
@@ -282,10 +349,11 @@ TextEditingController _adressField = TextEditingController();
                                 builder: (context) =>
                                     // ProfessorsPage()
                                     //MyNavigationBar(),
-                                    //    Body(),
-                                    HomeScreen(),
+                                        Body(),
+                                    //HomeScreen(),
                               ),
                             );
+                          }
                           }
                         },
                       ),
@@ -336,5 +404,35 @@ TextEditingController _adressField = TextEditingController();
             ),
           ),
         ));
+        
   }
+  
+}
+extension extString on String {
+  bool get isValidEmail {
+    final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    return emailRegExp.hasMatch(this);
+  }
+
+  bool get isValidName{
+    final nameRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
+    return nameRegExp.hasMatch(this);
+  }
+
+  bool get isValidPassword{
+    final passwordRegExp = new RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+    return passwordRegExp.hasMatch(this);
+  }
+
+  bool get isNotNull{
+    return this!=null;
+}
+
+
+  bool get isValidPhone{
+    final phoneRegExp = RegExp(r"^\+?0[0-9]{10}$");
+    return phoneRegExp.hasMatch(this);
+  }
+
+
 }

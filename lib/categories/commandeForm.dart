@@ -1,0 +1,268 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:pharmacie/categories/database/db.dart';
+import 'package:pharmacie/categories/medicament.dart';
+import 'package:pharmacie/categories/model/client.dart';
+import 'package:random_string/random_string.dart';
+
+
+class FormScreen extends StatefulWidget {
+  final String id;
+  // ignore: non_constant_identifier_names
+  final String adress_initial;
+  // ignore: non_constant_identifier_names
+  FormScreen({this.id, this.adress_initial});
+  @override
+  State<StatefulWidget> createState() {
+    return FormScreenState();
+  }
+}
+
+
+
+class FormScreenState extends State<FormScreen> {
+  String fullName;
+  String adresse;
+  String medicamentName;
+  String quantite;
+  String phoneNumber;
+  ClientModel client;
+  DatabaseService databaseService = new DatabaseService();
+  final _formKey = GlobalKey<FormState>();
+  bool circular = false;
+  bool isLoading;
+  bool centerCircle;
+  String commandeId;
+  String userUid;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  TextEditingController adressInitialController=new TextEditingController();
+  
+  // void getUserUid() {
+  // //   User myUser = FirebaseAuth.instance.currentUser;
+  // //   userUid = myUser.uid;
+  // //   print('USERRRRRRRRR' + userUid);
+  // // }
+  String name, adress, phone;
+
+  void createCommande() async {
+    final User user = auth.currentUser;
+    final uid = user.uid;
+    print(uid);
+    commandeId = randomAlphaNumeric(16);
+    if (_formKey.currentState.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+      setState(() {
+        centerCircle = true;
+      });
+
+      Map<String, String> profData = {
+        "idClient": uid,
+        "idPharmacy": widget.id,
+        "numCommande": commandeId,
+        "adress": widget.adress_initial==null?adresse:widget.adress_initial,
+      };
+      DocumentSnapshot ds =
+          await Firestore.instance.collection('Client').document(uid).get();
+      name = ds.data()['name'];
+      adresse = ds.data()['adress'];
+      phone = ds.data()['phone'];
+ 
+      List<String> MaList = List();
+      MaList.add("Name:" +
+          name +
+          "\n" +
+          " Adresse:" +
+          adresse +
+          "\n" +
+          " Phone:" +
+          phone +
+          "\n");
+      print(MaList);
+      String listData = "Infos Sur Client \n " + MaList.join("\n");
+
+      // String jsonString = jsonEncode(profData);
+      // print(jsonString);
+      // String dataClient =
+      //     "Infos sur le Client : \n Nom_Client :${fullName}\n  Adresse: ${adresse}\n  Télé: ${phoneNumber}\n";
+
+      databaseService.addcommandeData(profData, commandeId).then((value) {
+        setState(() {
+          isLoading = false;
+        });
+        // Future<void> getMedList() async {
+        //   // print(query);
+        //   // if (query != "") {
+        //   // queryData(widget.searchText);
+        //   final User user = auth.currentUser;
+        //   final uid = user.uid;
+
+        //   DocumentSnapshot ds =
+        //       await Firestore.instance.collection('Client').document(uid).get();
+        //   name = ds.data()['name'];
+        //   adresse = ds.data()['adress'];
+        //   phone = ds.data()['phone'];
+        //   List<String> MaList = List();
+        //   MaList.add("Name:" +
+        //       name +
+        //       "\n" +
+        //       "Adresse:" +
+        //       adresse +
+        //       "\n" +
+        //       "Phone:" +
+        //       phone);
+        //   print(MaList);
+        //   String listData = "Infos Sur Client \n " + MaList.join("\n");
+        // }
+
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    MedicamentFormScreen(commandeId, listData)));
+      });
+    }
+  }
+
+  Widget _buildAdress() {
+    return TextFormField(
+      initialValue: widget.adress_initial,
+      // controller: adressInitialController,
+      decoration: InputDecoration(
+          labelText: 'Entrer une adresse de livraison ',
+          icon: Icon(Icons.home_work_outlined)),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Adress is Required';
+        }
+
+        return null;
+      },
+      onChanged: (String value) {
+        adresse = value;
+      },
+    );
+  }
+
+  // Widget _builmedicamentName() {
+  //   return TextFormField(
+  //     decoration: InputDecoration(
+  //         labelText: 'Medicament', icon: Icon(Icons.medical_services)),
+  //     keyboardType: TextInputType.url,
+  //     validator: (String value) {
+  //       if (value.isEmpty) {
+  //         return 'Medicament is Required';
+  //       }
+
+  //       return null;
+  //     },
+  //     onSaved: (String value) {
+  //       _medicamentName = value;
+  //     },
+  //   );
+  // }
+
+  // Widget _buildquantite() {
+  //   return TextFormField(
+  //     decoration: InputDecoration(
+  //         labelText: 'Quantité', icon: Icon(Icons.production_quantity_limits)),
+  //     keyboardType: TextInputType.number,
+  //     validator: (String value) {
+  //       if (value.isEmpty) {
+  //         return 'Quantité is Required';
+  //       }
+
+  //       return null;
+  //     },
+  //     onSaved: (String value) {
+  //       _quantite = value;
+  //     },
+  //   );
+  // }
+
+  // Widget _buildphoneNumber() {
+  //   return TextFormField(
+  //     decoration: InputDecoration(
+  //         labelText: 'Numéro téléphone', icon: Icon(Icons.phone_iphone)),
+  //     keyboardType: TextInputType.phone,
+  //     validator: (String value) {
+  //       return null;
+  //     },
+  //     onChanged: (String value) {
+  //       phoneNumber = value;
+  //     },
+  //   );
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Formulaire"),
+        backgroundColor: Colors.grey,
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.all(24),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                // _buildName(),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                _buildAdress(),
+                SizedBox(
+                  height: 10,
+                ),
+                // _buildphoneNumber(),
+                GestureDetector(
+                  onTap: () {
+                    createCommande();
+                    circular = true;
+                  },
+                  // _builmedicamentName(),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+                  // _buildquantite(),
+                  child: Container(
+                    child: Center(
+                      child: Container(
+                        width: 200,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.teal,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: circular
+                              ? CircularProgressIndicator()
+                              : Text(
+                                  "Submit",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

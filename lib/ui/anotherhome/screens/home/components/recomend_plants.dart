@@ -1,60 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pharmacie/bloc/pharmacy.action.dart';
+import 'package:pharmacie/bloc/pharmacy.bloc.dart';
+import 'package:pharmacie/bloc/pharmacy.state.dart';
+import 'package:pharmacie/categories/category.dart';
+import 'package:pharmacie/enums/enums.dart';
 import 'package:pharmacie/model/pharmacy.model.dart';
 import 'package:pharmacie/ui/anotherhome/screens/details/details_screen.dart';
+import 'package:pharmacie/ui/detail/detail.dart';
+import 'package:pharmacie/ui/detail/detailDesign.dart';
 
 import '../../../constants.dart';
 
 class RecomendsPlants extends StatelessWidget {
-  final Pharmacy product;
+  // final List<Pharmacy> products;
   const RecomendsPlants({
-      this.product,
     Key key,
+    // this.products,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: <Widget>[
-          RecomendPlantCard(
-            image: product.image,
-            title: product.name,
-            country: product.location,
-            price: 440,
-            press: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DetailsScreen(),
-                ),
-              );
-            },
-          ),
-          // RecomendPlantCard(
-          //   image: "assets/images/image_2.png",
-          //   title: "Angelica",
-          //   country: "Russia",
-          //   price: 440,
-          //   press: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) => DetailsScreen(),
-          //       ),
-          //     );
-          //   },
-          // ),
-          // RecomendPlantCard(
-          //   image: "assets/images/image_3.png",
-          //   title: "Samantha",
-          //   country: "Russia",
-          //   price: 440,
-          //   press: () {},
-          // ),
-        ],
-      ),
-    );
+    context.read<PharmaciesBloc>().add(LoadAllPharmaciesEvents(""));
+    return BlocBuilder<PharmaciesBloc, PharmaciesState>(
+        builder: (context, state) {
+      return state.requestState == RequestState.LOADING
+          ? Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: <Widget>[
+                  for (int i = 0; i < state.pharmacies.length; i++)
+                    GestureDetector(
+                      child: RecomendPlantCard(
+                        image: state.pharmacies[i].image,
+                        title: state.pharmacies[i].name,
+                        country: state.pharmacies[i].location,
+                        price: 440,
+                        id: state.pharmacies[i].id,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailPage(
+                              product: state.pharmacies[i],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                ],
+              ),
+            );
+    });
   }
 }
 
@@ -65,10 +64,11 @@ class RecomendPlantCard extends StatelessWidget {
     this.title,
     this.country,
     this.price,
-    this.press,
+    this.press, 
+    this.id,
   }) : super(key: key);
 
-  final String image, title, country;
+  final String image, title, country,id;
   final int price;
   final Function press;
 
@@ -78,24 +78,34 @@ class RecomendPlantCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(
         left: kDefaultPadding,
-        top: kDefaultPadding*2 ,
+        top: kDefaultPadding / 2,
         bottom: kDefaultPadding * 2.5,
       ),
-      width: size.width * 0.4,
-      // height: size.height*2,
+      width: size.width * 0.5,
+      // height: size.height/5,
       child: Column(
-         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Image.network(image,fit:BoxFit.fitHeight),
+          Container(
+            height: 140,
+            decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(image),  fit: BoxFit.cover,),borderRadius: BorderRadius.circular(15),),
+            // child: Image.network(
+            //   image,
+            //   height: 150,
+              
+            // ),
+          ),
           GestureDetector(
-            onTap: press,
+            onTap: () {
+
+            },
             child: Container(
-              padding: EdgeInsets.all(kDefaultPadding / 2),
+              padding: EdgeInsets.only(
+                  left: kDefaultPadding / 2, right: kDefaultPadding / 2),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.grey[200],
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
+                  bottomLeft: Radius.circular(15),
+                  bottomRight: Radius.circular(15),
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -105,35 +115,78 @@ class RecomendPlantCard extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Wrap(
-                children:[ 
-                  // Row(
-                  // children: <Widget>[
-                    Flexible(
-                      child: RichText(
-                          overflow: TextOverflow.ellipsis,
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                                text: "$title\n".toUpperCase(),
-                                style: Theme.of(context).textTheme.button),
-                            TextSpan(
-                              
-                              text: "$country".toUpperCase(),
-                              
-                              style: TextStyle(
-                                color: kPrimaryColor.withOpacity(0.5),
-                                
-                              ),
+              child: Row(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    height: 25,
+                    width:50,
+                    child: ElevatedButton(
+                      
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Category(
+                              id: id,
                             ),
-                          ],
+                          ),
+                        );
+                      },
+                      child: Center(child: Icon(Icons.shop)),
+                      // Text('Commander',style: TextStyle(fontSize: 12),textAlign: TextAlign.center,),
+                      style:
+                       ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          
+                          // <-- Radius
                         ),
+                        primary: Color.fromRGBO(122, 211, 207, 1)
                       ),
                     ),
+                  ),
+                  // SizedBox(height: 5,),
+                  Padding(
+                    padding: const EdgeInsets.only(top:15.0,left:12),
+                    child: Flexible(
                  
-                  // ],
-                // ),
-                ]
+                    child:RichText(
+                      overflow: TextOverflow.visible,
+                      text: TextSpan(
+                        children: [
+                          
+                          TextSpan(
+                              text: "$title\n".toUpperCase(),
+                              style: TextStyle(color: Colors.black,fontSize:17)),
+                          // TextSpan(
+                          //   text: "$country".toUpperCase(),
+                          //   style: TextStyle(
+                          //     color: kPrimaryColor.withOpacity(0.5),
+                          //   ),
+                          // ),
+                        ],
+                      ),
+                    ),
+                      ),
+                  ),
+                  // Spacer(),
+                  // RaisedButton(
+                  //   color: Colors.green[200],
+
+                  //   child:Text("Commander",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w400),),
+                  //   onPressed: () {
+
+                  // },),
+                  
+                  // Text(
+                  //   '\$$price',
+                  //   style: Theme.of(context)
+                  //       .textTheme
+                  //       .button
+                  //       .copyWith(color: kPrimaryColor),
+                  // )
+                ],
               ),
             ),
           )

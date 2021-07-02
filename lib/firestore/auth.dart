@@ -36,6 +36,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:geolocator/geolocator.dart';
 
 Future<String> SignIn(String email, String password) async {
   String value;
@@ -49,12 +51,13 @@ Future<String> SignIn(String email, String password) async {
   }
 }
 
-Future<bool> Register(String email, String password, String statut, String name,String adress,
-    String phone) async {
+Future<bool> Register(String email, String password, String statut, String name,String phone,
+    String adress) async {
+      print(statut);
   try {
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
-        .then((value) {
+        .then((value) async {
       Firestore.instance.collection("Users").doc(value.user.uid).setData({
         'name': name,
         'email': email,
@@ -62,15 +65,34 @@ Future<bool> Register(String email, String password, String statut, String name,
       }).catchError((e) {
         print(e);
       });
-      if (statut == 'client') {
-        Firestore.instance.collection("Clients").doc(value.user.uid).setData({
+      if (statut == 'Client') {
+
+         print(adress);
+      var addresses = await Geocoder.local.findAddressesFromQuery(adress);
+      print(addresses);
+      print("GETTING COORDINATES");
+      var first = addresses.first;
+      var firstLat=first.coordinates.latitude;
+      var firstLong=first.coordinates.longitude;
+      // Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      List<Placemark> placemark = await Geolocator().placemarkFromCoordinates(firstLat,firstLong);
+      print(placemark);
+      print("HERE IS THE PLACEMARK");
+        Firestore.instance.collection("Client").doc(value.user.uid).setData({
           'name': name,
           'email': email,
           'adress': adress,
-          'phone': phone
+          'phone': phone,
+          'ville':placemark[0].locality,
+          'sublocality':placemark[0].subLocality,
+          'postalCode':placemark[0].postalCode,
+          'country':placemark[0].name,
+          'administrative':placemark[0].administrativeArea,
+          'uid':value.user.uid,
         }).catchError((e) {
           print(e);
         });
+        print("CLIENT created succeffly");
       }else {
            Firestore.instance.collection("Livreur").doc(value.user.uid).setData({
           'name': name,

@@ -52,6 +52,14 @@ dependencies:
   js: ^0.6.1+1
   flutter_google_places:
   select_form_field: ^1.0.0 
+  barcode_scan: ^2.0.1
+  qr_flutter: ^3.2.0
+  path_provider: ^1.6.5
+  flutter_barcode_scanner: ^2.0.0
+  image_picker: ^0.6.0+9
+  random_string: ^2.0.1
+  image_cropper:
+  qr_code_tools:
 
 
   # The following adds the Cupertino Icons font to your application.

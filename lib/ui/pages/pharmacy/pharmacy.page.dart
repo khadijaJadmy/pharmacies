@@ -19,7 +19,7 @@ class PharmaciesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //  this.pharmacy = ModalRoute.of(context).settings.arguments;
-    context.read<PharmaciesBloc>().add(LoadAllPharmaciesEvents());
+    context.read<PharmaciesBloc>().add(LoadAllPharmaciesEvents(""));
     return Scaffold(body: BlocBuilder<PharmaciesBloc, PharmaciesState>(
       builder: (context, state) {
         return state.requestState == RequestState.LOADING

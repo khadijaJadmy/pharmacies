@@ -10,6 +10,7 @@ import 'package:pharmacie/ui/anotherhome/screens/home/home_screen.dart' as Ho;
 // import 'package:pharmacie/ui/auth/authentification.dart';
 import 'package:pharmacie/ui/home/home.dart';
 import 'package:pharmacie/ui/pages/pharmacy/pharmacy.page.dart';
+import 'package:pharmacie/ui/welcome.dart';
 import 'bloc/pharmacy.state.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'enums/enums.dart';
@@ -48,8 +49,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.grey),
       routes: {
 
-        '/pharmacies' :(context)=>Body()
-        //Authentification(),
+        '/pharmacies' :(context)=>
+        //Body()
+        SplashScreen()
 
 
       },

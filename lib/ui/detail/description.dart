@@ -25,7 +25,7 @@ class Description extends StatelessWidget {
                 children: [
                   Text(
                     'Informations: ',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                   ),
                   Container(
                     padding: EdgeInsets.only(right: 40),

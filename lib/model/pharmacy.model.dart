@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class Pharmacy {
-    int id;
+    String id;
     String name;
     String description;
     String location;
     String image;
+    String phone;
+    String garderie;
 
-  Pharmacy({ this.id, this.name,   this.description,   this.location,  this.image});
+  Pharmacy({ @required this.id, @required this.name,  @required this.description,  @required this.location,@required  this.image,@required this.garderie,@required this.phone});
 }

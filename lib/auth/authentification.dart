@@ -14,7 +14,9 @@ import 'package:pharmacie/auth/inscription.dart';
 import 'package:pharmacie/firestore/auth.dart';
 import 'package:pharmacie/model/client.dart';
 import 'package:pharmacie/model/user.dart';
-import 'package:pharmacie/ui/anotherhome/screens/home/home_screen.dart' as Homee;
+import 'package:pharmacie/ui/anotherhome/screens/home/components/body.dart';
+import 'package:pharmacie/ui/anotherhome/screens/home/home_screen.dart'
+    as Homee;
 import 'package:pharmacie/ui/home/home.dart';
 
 // import '../../widgets/navBar.dart';
@@ -29,33 +31,33 @@ class Authentification extends StatefulWidget {
 
 class _AuthentificationState extends State<Authentification> {
 
-
+  final snackBar = SnackBar(content: Text('Mot de passe ou email est incorrect!'),backgroundColor: Colors.red[200]);
 
   Future<List<Client>> getListOfUsers() async {
-  List<Client> newList = [];
-  // List<Widget> newList=[];
-  Client featureData;
-  String id;
-  String uid = Auth.FirebaseAuth.instance.currentUser.uid;
-  // var docRef = db.collection("cities").doc("SF");
-  QuerySnapshot featureSnapShot =
-      await FirebaseFirestore.instance.collection("Professors").get();
+    List<Client> newList = [];
+    // List<Widget> newList=[];
+    Client featureData;
+    String id;
+    String uid = Auth.FirebaseAuth.instance.currentUser.uid;
+    // var docRef = db.collection("cities").doc("SF");
+    QuerySnapshot featureSnapShot =
+        await FirebaseFirestore.instance.collection("Professors").get();
 
-  featureSnapShot.docs.forEach(
-    (element) {
-      featureData = Client(
+    featureSnapShot.docs.forEach(
+      (element) {
+        featureData = Client(
           name: element.data()["name"],
           adress: element.data()["adress"],
           phone: element.data()["phone"],
           email: element.data()["email"],
-         );
-      // final documentID = userDocument.documentID;
-      newList.add(featureData);
-    },
-  );
-  // print(newList[0].category);
-  return newList;
-}
+        );
+        // final documentID = userDocument.documentID;
+        newList.add(featureData);
+      },
+    );
+    // print(newList[0].category);
+    return newList;
+  }
 
   Future<void> getList() async {
     List<Client> products = [];
@@ -83,7 +85,7 @@ class _AuthentificationState extends State<Authentification> {
         }
       },
     );
-    if (featureData.statut == "client") {
+    if (featureData.statut == "Client") {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -91,7 +93,7 @@ class _AuthentificationState extends State<Authentification> {
               // ProfessorsPage()
               //MyNavigationBar(),
               // Homee.HomeScreen(),
-              HomeScreen(),
+              Body(),
         ),
       );
     } else {
@@ -101,7 +103,7 @@ class _AuthentificationState extends State<Authentification> {
           builder: (context) =>
               // ProfessorsPage()
               //MyNavigationBar(),
-             // Inscription(),
+              // Inscription(),
               Inscription(),
         ),
       );
@@ -217,7 +219,7 @@ class _AuthentificationState extends State<Authentification> {
         //   ),
         // );
         Scaffold(
-          backgroundColor: Colors.white,
+            backgroundColor: Colors.white,
             //backgroundColor: Color.fromRGBO(136, 170, 195, 1),
             body: SingleChildScrollView(
               child: Container(
@@ -227,10 +229,11 @@ class _AuthentificationState extends State<Authentification> {
                       height: 350,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage('assets/images/pharmacy.jpg'),
-                              fit: BoxFit.fitWidth),
-                         color:Color.fromRGBO(212, 234, 248,1),
+                        image: DecorationImage(
+                            image: NetworkImage(
+                                'https://t4.ftcdn.net/jpg/02/77/54/11/240_F_277541160_F43wshVmxNkzfNoV70qvpl2EMsS7qMov.jpg'),
+                            fit: BoxFit.fitWidth),
+                        //  color:Color.fromRGBO(212, 234, 248,1),
                       ),
                       child: Stack(
                         children: <Widget>[
@@ -277,28 +280,38 @@ class _AuthentificationState extends State<Authentification> {
                           //     )
                           //     //),
                           //     ),
-                          Positioned(
-                              child:
-                                  // FadeAnimation(1.6,
-                                  Container(
-                            margin: EdgeInsets.only(top: 290),
-                            child: Center(
-                              child: Text(
-                                "Login",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 35,
-                                    fontWeight: FontWeight.w300
-                                    ),
-                              ),
-                            ),
-                          )
-                              //),
-                              )
+                          // Positioned(
+                          //     child:
+                          //         // FadeAnimation(1.6,
+
+                          //     //),
+                          // )
                         ],
                       ),
                     ),
-                    SizedBox(height: 30,),
+                    Container(
+                      // margin: EdgeInsets.only(top: 320),
+                      decoration:BoxDecoration(
+                        gradient: LinearGradient(colors: [
+                                    // Color.fromRGBO(155, 178, 161, 1),
+ Color.fromRGBO(72, 219, 211, 0),
+                                    Color.fromRGBO(1, 177, 174, 1),
+                                    Color.fromRGBO(72, 219, 211, 0),])
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Online Pharmacy",
+                          style: TextStyle(
+                              color: Colors.black,
+                              
+                              fontSize: 35,
+                              fontWeight: FontWeight.w300,),
+                        ),
+                      ),
+                    ),
+                    // SizedBox(
+                    //   height: 50,
+                    // ),
                     Padding(
                       padding: EdgeInsets.all(30.0),
                       child: Column(
@@ -359,9 +372,10 @@ class _AuthentificationState extends State<Authentification> {
                                   borderRadius: BorderRadius.circular(10),
                                   gradient: LinearGradient(colors: [
                                     // Color.fromRGBO(155, 178, 161, 1),
-                                  
-                                    Color.fromRGBO(136, 170, 195,1),
-                                      Color.fromRGBO(212, 234, 248,1),
+
+                                    Color.fromRGBO( 1, 177, 174, 1),
+                                   
+                                    Color.fromRGBO( 1, 177, 174, 1),
                                     // Color.fromRGBO(155, 178, 161, .6),
                                   ])),
                               child: Center(
@@ -375,6 +389,9 @@ class _AuthentificationState extends State<Authentification> {
                             onTap: () async {
                               String shouldNavigate = await SignIn(
                                   _emailField.text, _passwordField.text);
+                                  if(shouldNavigate=="false"){
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                  }
                               verifyStatutOfUser(shouldNavigate);
                             },
                           ),
