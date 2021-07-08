@@ -120,9 +120,9 @@ class Body extends StatelessWidget {
                                 //    );
                                 print("YOU HAVE JUST TAPPED SOMETHING");
                                 // searchController.text=value;
-                                // context
-                                //     .read<PharmaciesBloc>()
-                                //     .add(LoadPharmaciesBySearchName(value));
+                                context
+                                    .read<PharmaciesBloc>()
+                                    .add(LoadPharmaciesBySearchName(value));
                                 // LoadPharmaciesBySearchName(value);
                                 print(value);
                               },
@@ -151,7 +151,7 @@ class Body extends StatelessWidget {
           ),
 
           TitleWithMoreBtn(
-              title: "Liste des pharmacies", press: () {}, line: true),
+              title: "Pharmacies", press: () {}, line: true),
           SizedBox(height: 10),
           RecomendsPlants(),
           TitleWithMoreBtn(

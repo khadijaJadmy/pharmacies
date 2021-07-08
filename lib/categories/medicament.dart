@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:pharmacie/categories/database/db.dart';
 import 'package:pharmacie/categories/generate.dart';
 import 'package:pharmacie/categories/model/medModel.dart';
+import 'package:pharmacie/ui/anotherhome/constants.dart';
 
 import 'package:random_string/random_string.dart';
+
+import 'commandeForm.dart';
 
 class MedicamentFormScreen extends StatefulWidget {
   final String commandeId;
@@ -230,9 +233,20 @@ class MedicamentFormScreenState extends State<MedicamentFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Formulaire"),
-        backgroundColor: Colors.grey,
-      ),
+          leading: BackButton(
+            color: Colors.white,
+            onPressed: () {
+              // Navigator.of(context).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FormScreen(),
+                  ));
+            },
+          ),
+          title:Text("Ajouter les medicaments",style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white),),
+          backgroundColor: kPrimaryColor,
+        ),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(24),
@@ -255,69 +269,129 @@ class MedicamentFormScreenState extends State<MedicamentFormScreen> {
                 ),
                 _buildForme(),
                 SizedBox(
-                  height: 20,
+                  height: 100,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    createCommandeMed();
-                  },
-                  child: Container(
-                    child: Center(
-                      child: Container(
-                        width: 120,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.teal,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: circular
-                              ? CircularProgressIndicator()
-                              : Text(
-                                  "Ajouter",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    getMedList();
-                  },
-                  child: Container(
-                    child: Center(
-                      child: Container(
-                        width: 120,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.teal,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: circular
-                              ? CircularProgressIndicator()
-                              : Text(
-                                  "Valider",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          createCommandeMed();
+                        },
+                        child: Container(
+                          width: 130,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            // color: Color.fromRGBO(9, 189, 180, 0.4),
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                                color: Color.fromRGBO(9, 189, 180, 0.4),
+                                width: 2),
+                          ),
+                          child: Center(
+                              child: Icon(
+                            Icons.plus_one,
+                            size: 30,
+                            color: Colors.green,
+                          )),
                         ),
                       ),
-                    ),
+                      GestureDetector(
+                        onTap: () {
+                          getMedList();
+                          circular = true;
+                        },
+                        child: Container(
+                          width: 130,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            // gradient: LinearGradient(colors: [
+                            //   Color.fromRGBO(9, 189, 180, 0.3),
+                            //   Color.fromRGBO(9, 189, 180, 0.6),
+                            //   Color.fromRGBO(9, 189, 180, 1),
+                            //   Color.fromRGBO(9, 189, 180, 0.2),
+                            // ]),
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Valider",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                // GestureDetector(
+                //   onTap: () {
+                //     createCommandeMed();
+                //   },
+                //   child: Container(
+                //     child: Center(
+                //       child: Container(
+                //         width: 120,
+                //         height: 40,
+                //         decoration: BoxDecoration(
+                //           color: Colors.teal,
+                //           borderRadius: BorderRadius.circular(10),
+                //         ),
+                //         child: Center(
+                //           child: circular
+                //               ? CircularProgressIndicator()
+                //               : Text(
+                //                   "Ajouter",
+                //                   style: TextStyle(
+                //                     color: Colors.white,
+                //                     fontSize: 18,
+                //                     fontWeight: FontWeight.bold,
+                //                   ),
+                //                 ),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 30,
+                // ),
+                // GestureDetector(
+                //   onTap: () {
+                //     getMedList();
+                //   },
+                //   child: Container(
+                //     child: Center(
+                //       child: Container(
+                //         width: 120,
+                //         height: 40,
+                //         decoration: BoxDecoration(
+                //           color: Colors.teal,
+                //           borderRadius: BorderRadius.circular(10),
+                //         ),
+                //         child: Center(
+                //           child: circular
+                //               ? CircularProgressIndicator()
+                //               : Text(
+                //                   "Valider",
+                //                   style: TextStyle(
+                //                     color: Colors.white,
+                //                     fontSize: 18,
+                //                     fontWeight: FontWeight.bold,
+                //                   ),
+                //                 ),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

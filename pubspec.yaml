@@ -65,6 +65,8 @@ dependencies:
   toast:
   firebase_ml_vision: ^0.9.10
   expansion_tile_card:
+  string_similarity:
+  
   
 
 

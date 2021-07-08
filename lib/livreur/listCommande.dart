@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmacie/auth/authentification.dart';
 import 'package:pharmacie/categories/model/commande.dart';
@@ -43,8 +44,8 @@ class _LivreurState extends State<Livreurstate> {
     // try {
     // String uid = FirebaseAuth.instance.currentUser.uid;
 
-    //String uid = FirebaseAuth.instance.currentUser.uid;
-    String uid = "8eHcfjW3J9Q7xbPUTcK334yzAYk1";
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    // String uid = "8eHcfjW3J9Q7xbPUTcK334yzAYk1";
     String idPharmacy;
 
     List<CommandeModel> liste = List();
@@ -102,6 +103,7 @@ class _LivreurState extends State<Livreurstate> {
                 numCommande: result.data()["numCommande"],
                 adresse: result.data()["adress"],
                 mediList: [],
+                qrcode: result.data()["qrCode"],
                 uid: result.documentID,
                 statut: result.data()["statut"]);
             setState(() {

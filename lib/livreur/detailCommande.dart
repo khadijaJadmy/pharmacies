@@ -19,6 +19,7 @@ class DetailCommande extends StatefulWidget {
 class _LivreurState extends State<DetailCommande> {
 //GlobalKey<FormState> _key=new GlobalKey()
   Client client;
+  String result;
   bool expanded = false;
   Future displayInfoClient() async {
     print("inside display");
@@ -53,12 +54,17 @@ class _LivreurState extends State<DetailCommande> {
   }
 
   void scanQr(String uid) async {
-    String result;
+    
     //  String uid = "8eHcfjW3J9Q7xbPUTcK334yzAYk1";
 
     try {
       String scanResult = await BarcodeScanner.scan();
-      result = scanResult;
+      setState(() {
+        result = scanResult;
+      });
+      
+    print(result);
+    print("REESULT");
 
       //loadYourData();
 
@@ -74,16 +80,26 @@ class _LivreurState extends State<DetailCommande> {
         print(value.data()['id']);
 
 //Comparer les qr codes
-        if (value.data()['qrcode'] == result) {
+        if (widget.commande.qrcode == result) {
           setState(() {
             final firestoreInstance = FirebaseFirestore.instance;
 
             firestoreInstance
                 .collection("commande")
                 .doc(uid)
-                .set({"statut": "Terminé"});
+                .update({"statut": "Terminé"});
             print("statut changed");
           });
+
+          Fluttertoast.showToast(
+              msg: "Le Qr Code est bien scanné, votre commande est validée ",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16.0);
+
         } else {
           Fluttertoast.showToast(
               msg: "Le Qr Code ne correspond pas à la commande ",

@@ -37,7 +37,7 @@ List<MedicamentModel> medicaments=[];
   //    //return adresse;
   //     });
       FirebaseFirestore firestore = FirebaseFirestore.instance;
-
+  print(qrCode);
       await firestore
         .collection('commande')
         .where('idClient', isEqualTo: FirebaseAuth.instance.currentUser.uid).where('statut', isEqualTo: "encours")
@@ -104,7 +104,7 @@ void initState() {
               Padding(
                   padding: const EdgeInsets.only(left: 0.0),
                   child: Center(
-                    child: QrImage(
+                    child: qrCode==null?Text("No commande found"):QrImage(
                       //plce where the QR Image will be shown
                       data: qrCode==null?"": qrCode,
                       size: 300,

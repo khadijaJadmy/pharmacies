@@ -313,7 +313,7 @@ class _AuthentificationState extends State<Authentification> {
                       ),
                       child: Center(
                         child: Text(
-                          "Online Pharmacy",
+                          "Pharmacy City",
                           style: TextStyle(
                               color: Colors.black,
                               

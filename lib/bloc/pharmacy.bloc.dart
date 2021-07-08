@@ -44,7 +44,7 @@ class PharmaciesBloc extends Bloc<PharmaciesEvent, PharmaciesState> {
 
             pharmacies: state.pharmaciesbysearch!=null?state.pharmaciesbysearch:data,
             pharmaciesbylocation: state.pharmaciesbylocation,
-            pharmaciesbysearch: null,
+            pharmaciesbysearch: state.pharmaciesbysearch==null?null:state.pharmaciesbysearch,
             requestState2: state.requestState2);
       } catch (e) {
         yield PharmaciesState(
@@ -95,7 +95,8 @@ class PharmaciesBloc extends Bloc<PharmaciesEvent, PharmaciesState> {
           pharmacies: state.pharmacies,
           
           pharmaciesbylocation: state.pharmaciesbylocation,
-          requestState2: state.requestState2);
+          // requestState2: state.requestState2
+          );
       try {
         List<Pharmacy> data =
             await messagesRepository.pharmacyByName(event.payload);
@@ -111,7 +112,7 @@ class PharmaciesBloc extends Bloc<PharmaciesEvent, PharmaciesState> {
         print(data);
         yield PharmaciesState(
           // requestState: state.requestState,
-          requestState3: RequestState.LOADING,
+          // requestState3: RequestState.LOADING,
           search: event.payload,
           pharmacies: state.pharmacies,
           pharmaciesbylocation: state.pharmaciesbylocation,

@@ -61,7 +61,7 @@ class TitleWithCustomUnderline extends StatelessWidget {
               children: [
                 RichText(
                     text: TextSpan(children: [
-                  WidgetSpan(child: line==true?Icon(Icons.list):Icon(Icons.location_on)),
+                  // WidgetSpan(child: line==true?Icon(Icons.list):Icon(Icons.location_on)),
               
                   TextSpan(
                       text: ' '+text,

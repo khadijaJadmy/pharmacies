@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 
 import 'dart:ui';
 import 'package:flutter/rendering.dart';
+import 'package:pharmacie/categories/commandeForm.dart';
 import 'package:pharmacie/categories/model/medModel.dart';
+import 'package:pharmacie/ui/anotherhome/constants.dart';
 // import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+
+import 'category.dart';
 
 class GeneratePage extends StatefulWidget {
   String dataMed, commandeId;
@@ -91,18 +95,21 @@ class GeneratePageState extends State<GeneratePage> {
   Widget build(BuildContext context) {
     // getMedList();
     return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          color: Colors.black54,
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+      appBar:  AppBar(
+          leading: BackButton(
+            color: Colors.white,
+            onPressed: () {
+              // Navigator.of(context).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FormScreen(),
+                  ));
+            },
+          ),
+          title:Text("Scanner vos médicamenets",style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white),),
+          backgroundColor: kPrimaryColor,
         ),
-        title: Text(
-          'Commandes',
-          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
-        ),
-      ),
       body: Column(
         children: [
           Container(
@@ -113,18 +120,6 @@ class GeneratePageState extends State<GeneratePage> {
                 data: widget.dataMed,
                 size: 150,
                 padding: EdgeInsets.only(left: 20, top: 30),
-              ),
-            ),
-          ),
-          Container(
-            child: ListTile(
-              title: Text(
-                'Prière de prendre une photo à votre QR Code pour le vérifier avec le livreur',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
               ),
             ),
           ),
@@ -147,7 +142,7 @@ class GeneratePageState extends State<GeneratePage> {
 
                     return Container(
                         decoration: BoxDecoration(
-                          color: Color(0xffdddddd),
+                          color: Color.fromRGBO(1, 177, 174, 0.2),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(12.0)),
                           boxShadow: <BoxShadow>[
@@ -166,6 +161,7 @@ class GeneratePageState extends State<GeneratePage> {
                             title: Text(
                               'Medicament N° $index1',
                               style: TextStyle(
+                                  fontSize: 18,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.teal),
                               textAlign: TextAlign.center,
@@ -219,10 +215,6 @@ class GeneratePageState extends State<GeneratePage> {
                               subtitle: TextFormField(
                                 controller: dosage,
                               )),
-                          Divider(
-                            thickness: 2,
-                            color: Colors.black54,
-                          )
                         ]));
                   }))
         ],

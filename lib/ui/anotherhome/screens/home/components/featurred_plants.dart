@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pharmacie/bloc/pharmacy.action.dart';
 import 'package:pharmacie/bloc/pharmacy.bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -125,7 +126,11 @@ class FeaturePlantCard extends StatelessWidget {
                           ),
                         );
                       },
-                      child: Center(child: Icon(Icons.shop)),
+                      child: Center(child: FaIcon(
+                                      FontAwesomeIcons.shoppingCart,
+                                      size: 15,
+                                      color: kPrimaryColor,
+                                    )),
                       // Text('Commander',style: TextStyle(fontSize: 12),textAlign: TextAlign.center,),
                       style:
                        ElevatedButton.styleFrom(

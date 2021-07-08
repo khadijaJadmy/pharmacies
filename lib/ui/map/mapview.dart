@@ -368,7 +368,7 @@ class _MapViewState extends State<MapView> {
     List<LatLng> polylineCoordinates = [];
 //AIzaSyBaZHYeXE_Bb8_sv7edLHQL_qVHQU-bhDk this one is working do not test whit it bzf hh
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      "AIzaSyBC_A0NIoA66IyetH_GgNqH5uFx-Pyw2QA",
+      "AIzaSyBaZHYeXE_Bb8_sv7edLHQL_qVHQU-bhDk",
       PointLatLng(_origin.latitude, _origin.longitude),
       PointLatLng(_dest.latitude, _dest.longitude),
       travelMode: TravelMode.driving,
@@ -401,7 +401,7 @@ class _MapViewState extends State<MapView> {
     List<dynamic> dataLogin = new List<dynamic>();  //AIzaSyBaZHYeXE_Bb8_sv7edLHQL_qVHQU-bhDk this is the api that works do not using it
     Dio dio = new Dio();
     Response response = await dio.get(
-        "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&&origins=$positionLat,$positionLong&destinations=$firstLat,$firstLong&key=AIzaSyBC_A0NIoA66IyetH_GgNqH5uFx-Pyw2QA");
+        "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&&origins=$positionLat,$positionLong&destinations=$firstLat,$firstLong&key=AIzaSyBaZHYeXE_Bb8_sv7edLHQL_qVHQU-bhDk");
     print(response.data);
     print(response.statusCode);
     var _jsonEncode = json.encode(response.data);
@@ -459,33 +459,38 @@ class _MapViewState extends State<MapView> {
   }
 
   getInfoOfLocations() async {
-    String livreurUid;
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    await firestore
-        .collection('Commande')
-        .where('clientUid', isEqualTo: FirebaseAuth.instance.currentUser.uid)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((result) {
-        setState(() {
-          livreurUid = result.data()['livreurUID'];
-          adress_client = result.data()['adressePickup'];
-          startAddressController.text=adress_client;
-        });
-      });
+    // String livreurUid;
+    // FirebaseFirestore firestore = FirebaseFirestore.instance;
+    // await firestore
+    //     .collection('commande')
+    //     .where('idClient', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+    //     .get()
+    //     .then((QuerySnapshot querySnapshot) {
+    //   querySnapshot.docs.forEach((result) {
+    //     setState(() {
+    //       livreurUid = result.data()['livreurUID'];
+    //       adress_client = result.data()['adressePickup'];
+    //       startAddressController.text=adress_client;
+    //     });
+    //   });
+    // });
+    // await firestore
+    //     .collection('Livreur')
+    //     .where('id', isEqualTo: livreurUid)
+    //     .get()
+    //     .then((QuerySnapshot querySnapshot) {
+    //   querySnapshot.docs.forEach((result) {
+    //     setState(() {
+    //       adress_livreur = result.data()['adress'];
+    //       destinationAddressController.text=adress_livreur;
+    //     });
+    //   });
+    // });
+    startAddressController.text=adress_client;
+    setState(() {
+      destinationAddressController.text='Ain Sbaa Casablanca';
     });
-    await firestore
-        .collection('Livreur')
-        .where('id', isEqualTo: livreurUid)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((result) {
-        setState(() {
-          adress_livreur = result.data()['adress'];
-          destinationAddressController.text=adress_livreur;
-        });
-      });
-    });
+    
   }
 
   @override

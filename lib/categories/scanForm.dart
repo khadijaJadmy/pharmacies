@@ -8,8 +8,11 @@ import 'package:pharmacie/categories/database/db.dart';
 
 import 'package:pharmacie/categories/model/client.dart';
 import 'package:pharmacie/categories/qrscan.dart';
+import 'package:pharmacie/ui/anotherhome/constants.dart';
 
 import 'package:random_string/random_string.dart';
+
+import 'category.dart';
 
 class ScanForm extends StatefulWidget {
   final String id;
@@ -199,9 +202,20 @@ class ScanFormState extends State<ScanForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Formulaire"),
-        backgroundColor: Colors.grey,
-      ),
+          leading: BackButton(
+            color: Colors.white,
+            onPressed: () {
+              // Navigator.of(context).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Category(),
+                  ));
+            },
+          ),
+          title:Text("Confirmer votre adresse",style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white),),
+          backgroundColor: kPrimaryColor,
+        ),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(24),
@@ -227,15 +241,15 @@ class ScanFormState extends State<ScanForm> {
                   // _builmedicamentName(),
                   // SizedBox(
                   //   height: 10,
-                  // ),
+                  // ),a
                   // _buildquantite(),
                   child: Container(
                     child: Center(
                       child: Container(
-                        width: 120,
-                        height: 40,
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
                         decoration: BoxDecoration(
-                          color: Colors.teal,
+                          color: Color.fromRGBO(9, 189, 180, 1),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Center(

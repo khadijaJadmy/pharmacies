@@ -8,6 +8,9 @@ import 'package:pharmacie/categories/data.dart';
 import 'package:pharmacie/categories/database/db.dart';
 import 'package:pharmacie/categories/generate.dart';
 import 'package:pharmacie/categories/model/medModel.dart';
+import 'package:pharmacie/ui/anotherhome/constants.dart';
+
+import 'category.dart';
 
 class QRCodePage extends StatefulWidget {
   String commandeId, listClient;
@@ -28,8 +31,7 @@ class _QRCodePageState extends State<QRCodePage> {
   TextEditingController forme;
   TextEditingController dosage;
   TextEditingController ppt;
-
-  String quantite;
+  TextEditingController quantite = new TextEditingController();
 
   DatabaseService databaseService = new DatabaseService();
   final _formKey = GlobalKey<FormState>();
@@ -61,6 +63,7 @@ class _QRCodePageState extends State<QRCodePage> {
         print("NOMMMMMMMMM");
         print(yourDataModel[i].nom);
         items.add(yourDataModel[i]);
+
         print(items);
         // Do your stuff
       }
@@ -75,7 +78,7 @@ class _QRCodePageState extends State<QRCodePage> {
 
       Map<String, dynamic> medData = {
         "medicamentName": name.text,
-        "quantite": quantite,
+        "quantite": quantite.text,
         "dosage": dosage.text,
         "forme": forme.text,
       };
@@ -87,6 +90,12 @@ class _QRCodePageState extends State<QRCodePage> {
       databaseService.addMedData(medData, widget.commandeId).then((value) {
         setState(() {
           isLoading = false;
+          name.clear();
+          dosage.clear();
+          forme.clear();
+          price.clear();
+          ppt.clear();
+          quantite.clear();
         });
         print("ADDDDDD suc");
 
@@ -179,8 +188,20 @@ class _QRCodePageState extends State<QRCodePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('fetch med data '),
-      ),
+          leading: BackButton(
+            color: Colors.white,
+            onPressed: () {
+              // Navigator.of(context).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Category(),
+                  ));
+            },
+          ),
+          title:Text("Scanner vos médicamenets",style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white),),
+          backgroundColor: kPrimaryColor,
+        ),
       body: Center(
         child: Column(children: [
           Row(children: []),
@@ -274,87 +295,97 @@ class _QRCodePageState extends State<QRCodePage> {
                                                     fontWeight:
                                                         FontWeight.w500)),
                                             subtitle: TextFormField(
+                                              controller: quantite,
                                               decoration: InputDecoration(
                                                   hintText:
                                                       'Entrer la quantité'),
-                                              validator: (String value) {
-                                                if (value.isEmpty) {
-                                                  return 'Quantité is required';
-                                                }
+                                              // validator: (String value) {
+                                              //   if (value.isEmpty) {
+                                              //     return 'Quantité is required';
+                                              //   }
 
-                                                return null;
-                                              },
-                                              onChanged: (String value) {
-                                                quantite = value;
-                                              },
+                                              //   return null;
+                                              // },
+                                              // onChanged: (String value) {
+                                              //   quantite = value;
+                                              // },
                                             )),
                                         SizedBox(
                                           height: 20,
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            createCommandeMed();
-                                          },
-                                          child: Container(
-                                            child: Center(
-                                              child: Container(
-                                                width: 100,
-                                                height: 40,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.teal,
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Center(
-                                                  child: circular
-                                                      ? CircularProgressIndicator()
-                                                      : Text(
-                                                          "Ajouter",
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            getMedList();
-                                          },
-                                          child: Container(
-                                            child: Center(
-                                              child: Container(
-                                                width: 100,
-                                                height: 40,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.teal,
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Center(
-                                                  child: circular
-                                                      ? CircularProgressIndicator()
-                                                      : Text(
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              child: Row(
+                                                // mainAxisAlignment:
+                                                // MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      createCommandeMed();
+                                                    },
+                                                    child: Container(
+                                                      width: 100,
+                                                      height: 50,
+                                                      decoration: BoxDecoration(
+                                                        // color: Color.fromRGBO(9, 189, 180, 0.4),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                15),
+                                                        border: Border.all(
+                                                            color: Color.fromRGBO(
+                                                                9, 189, 180, 0.4),
+                                                            width: 2),
+                                                      ),
+                                                      child: Center(
+                                                          child: Icon(
+                                                        Icons.plus_one,
+                                                        size: 30,
+                                                        color: Colors.green,
+                                                      )),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 20,
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      getMedList();
+                                                      circular = true;
+                                                    },
+                                                    child: Container(
+                                                      width: 130,
+                                                      height: 50,
+                                                      decoration: BoxDecoration(
+                                                        // gradient: LinearGradient(colors: [
+                                                        //   Color.fromRGBO(9, 189, 180, 0.3),
+                                                        //   Color.fromRGBO(9, 189, 180, 0.6),
+                                                        //   Color.fromRGBO(9, 189, 180, 1),
+                                                        //   Color.fromRGBO(9, 189, 180, 0.2),
+                                                        // ]),
+                                                        color: Colors.green,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                15),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
                                                           "Valider",
                                                           style: TextStyle(
                                                             color: Colors.white,
-                                                            fontSize: 18,
+                                                            fontSize: 15,
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                           ),
                                                         ),
-                                                ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ),
+                                          ],
                                         ),
                                       ],
                                     ))),
@@ -364,8 +395,14 @@ class _QRCodePageState extends State<QRCodePage> {
                 ),
         ]),
       ),
-      floatingActionButton:
-          FloatingActionButton.extended(onPressed: scanQR, label: Text('Scan')),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: scanQR,
+        label: Text(
+          'Scan',
+          style: TextStyle(color: Colors.white, fontSize: 17),
+        ),
+        backgroundColor: Color.fromRGBO(9, 189, 180, 0.4),
+      ),
     );
   }
 }

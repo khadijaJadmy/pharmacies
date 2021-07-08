@@ -4,9 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pharmacie/categories/category.dart';
 import 'package:pharmacie/categories/database/db.dart';
 import 'package:pharmacie/categories/medicament.dart';
 import 'package:pharmacie/categories/model/client.dart';
+import 'package:pharmacie/ui/anotherhome/constants.dart';
 import 'package:random_string/random_string.dart';
 
 class FormScreen extends StatefulWidget {
@@ -66,7 +68,7 @@ class FormScreenState extends State<FormScreen> {
         "adress":
             widget.adress_initial == null ? adresse : widget.adress_initial,
         "qrCode": " ",
-        "statut":"En cours"
+        "statut": "En cours"
       };
       DocumentSnapshot ds =
           await Firestore.instance.collection('Client').document(uid).get();
@@ -204,9 +206,20 @@ class FormScreenState extends State<FormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Formulaire"),
-        backgroundColor: Colors.grey,
-      ),
+          leading: BackButton(
+            color: Colors.white,
+            onPressed: () {
+              // Navigator.of(context).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Category(),
+                  ));
+            },
+          ),
+          title:Text("Confirmer votre adresse",style: TextStyle(fontStyle: FontStyle.italic, color: Colors.white),),
+          backgroundColor: kPrimaryColor,
+        ),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(24),
@@ -221,7 +234,7 @@ class FormScreenState extends State<FormScreen> {
                 // ),
                 _buildAdress(),
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 // _buildphoneNumber(),
                 GestureDetector(
@@ -234,20 +247,21 @@ class FormScreenState extends State<FormScreen> {
                   //   height: 10,
                   // ),
                   // _buildquantite(),
+
                   child: Container(
                     child: Center(
                       child: Container(
-                        width: 200,
+                        width: MediaQuery.of(context).size.width,
                         height: 50,
                         decoration: BoxDecoration(
-                          color: Colors.teal,
-                          borderRadius: BorderRadius.circular(10),
+                          color: Color.fromRGBO(9, 189, 180, 1),
+                          borderRadius: BorderRadius.circular(15),
                         ),
                         child: Center(
                           child: circular
                               ? CircularProgressIndicator()
                               : Text(
-                                  "Submit",
+                                  "valider",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
