@@ -102,6 +102,17 @@ class MedicamentFormScreenState extends State<MedicamentFormScreen> {
         widget.jsonString + "Infos Sur la commande \n " + MaList.join("\n");
     Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (context) => GeneratePage(listData)));
+
+// To save qr code
+
+    //       final firestoreInstance = FirebaseFirestore.instance;
+
+    // firestoreInstance.collection("commande").doc(widget.commandeId).set(
+    // {
+    //   "qrcode" : listData,
+
+    //   }
+    // );
   }
 
   createCommandeMed() {
@@ -138,6 +149,7 @@ class MedicamentFormScreenState extends State<MedicamentFormScreen> {
     }
   }
 
+  void save() {}
   Widget _builmedicamentName() {
     return TextFormField(
       controller: nameController,

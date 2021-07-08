@@ -12,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart' as Auth;
 import 'package:flutter/material.dart';
 import 'package:pharmacie/auth/inscription.dart';
 import 'package:pharmacie/firestore/auth.dart';
+import 'package:pharmacie/livreur/listCommande.dart';
 import 'package:pharmacie/model/client.dart';
 import 'package:pharmacie/model/user.dart';
 import 'package:pharmacie/ui/anotherhome/screens/home/components/body.dart';
@@ -96,7 +97,19 @@ class _AuthentificationState extends State<Authentification> {
               Body(),
         ),
       );
-    } else {
+    }else if (featureData.statut == "Livreur") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              // ProfessorsPage()
+              //MyNavigationBar(),
+              // Homee.HomeScreen(),
+              Livreurstate(),
+        ),
+      );
+    } 
+     else {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -292,11 +305,11 @@ class _AuthentificationState extends State<Authentification> {
                     Container(
                       // margin: EdgeInsets.only(top: 320),
                       decoration:BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                                    // Color.fromRGBO(155, 178, 161, 1),
- Color.fromRGBO(72, 219, 211, 0),
-                                    Color.fromRGBO(1, 177, 174, 1),
-                                    Color.fromRGBO(72, 219, 211, 0),])
+//                         gradient: LinearGradient(colors: [
+//                                     // Color.fromRGBO(155, 178, 161, 1),
+//  Color.fromRGBO(72, 219, 211, 0.4),
+//                                     Color.fromRGBO(1, 177, 174, 0.5),
+//                                     Color.fromRGBO(72, 219, 211, 0.3),])
                       ),
                       child: Center(
                         child: Text(
@@ -375,7 +388,7 @@ class _AuthentificationState extends State<Authentification> {
 
                                     Color.fromRGBO( 1, 177, 174, 1),
                                    
-                                    Color.fromRGBO( 1, 177, 174, 1),
+                                    Color.fromRGBO( 1, 177, 174, 0.5),
                                     // Color.fromRGBO(155, 178, 161, .6),
                                   ])),
                               child: Center(

@@ -84,11 +84,11 @@ class ItemCard extends StatelessWidget {
           //   child: 
           Container(
               // padding: EdgeInsets.all(kDefaultPaddin),
-               height: 100,
-               width: 150,
+              //  height: 80,
+              //  width: 50,
               decoration: BoxDecoration(
                   // color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(30),
                   shape: BoxShape.rectangle,
                   image: 
                   DecorationImage(

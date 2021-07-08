@@ -54,6 +54,9 @@ Future<String> SignIn(String email, String password) async {
 Future<bool> Register(String email, String password, String statut, String name,String phone,
     String adress) async {
       print(statut);
+      print("RREGIISTER");
+      print(email); print(password); print(statut); print(name);print(phone);print(adress);
+
   try {
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)

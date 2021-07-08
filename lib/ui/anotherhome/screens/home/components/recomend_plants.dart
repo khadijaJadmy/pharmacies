@@ -64,11 +64,11 @@ class RecomendPlantCard extends StatelessWidget {
     this.title,
     this.country,
     this.price,
-    this.press, 
+    this.press,
     this.id,
   }) : super(key: key);
 
-  final String image, title, country,id;
+  final String image, title, country, id;
   final int price;
   final Function press;
 
@@ -81,94 +81,106 @@ class RecomendPlantCard extends StatelessWidget {
         top: kDefaultPadding / 2,
         bottom: kDefaultPadding * 2.5,
       ),
-      width: size.width * 0.5,
+      // width: size.width * 0.5,
       // height: size.height/5,
       child: Column(
         children: <Widget>[
           Container(
-            height: 140,
-            decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(image),  fit: BoxFit.cover,),borderRadius: BorderRadius.circular(15),),
-            // child: Image.network(
-            //   image,
-            //   height: 150,
-              
-            // ),
-          ),
-          GestureDetector(
-            onTap: () {
-
-            },
-            child: Container(
-              padding: EdgeInsets.only(
-                  left: kDefaultPadding / 2, right: kDefaultPadding / 2),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(15),
-                  bottomRight: Radius.circular(15),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    offset: Offset(0, 10),
-                    blurRadius: 50,
-                    color: kPrimaryColor.withOpacity(0.23),
-                  ),
-                ],
+            height: 100,
+            width: 170,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(image),
+                fit: BoxFit.cover,
               ),
-              child: Row(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    height: 25,
-                    width:50,
-                    child: ElevatedButton(
-                      
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Category(
-                              id: id,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Center(child: Icon(Icons.shop)),
-                      // Text('Commander',style: TextStyle(fontSize: 12),textAlign: TextAlign.center,),
-                      style:
-                       ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          
-                          // <-- Radius
-                        ),
-                        primary: Color.fromRGBO(122, 211, 207, 1)
-                      ),
-                    ),
-                  ),
+              borderRadius: BorderRadius.circular(15),
+            ),
+       
+          ),
+          // GestureDetector(
+          //   onTap: () {},
+          //   child: Container(
+          //       // height: 100,
+          //   width: 170,
+          //     // padding: EdgeInsets.only(
+          //         // left: kDefaultPadding / 2, right: kDefaultPadding / 2),
+          //     decoration: BoxDecoration(
+          //       // color: Colors.grey[200],
+          //       color:Color.fromRGBO(1, 177, 174, 0.2),
+          //       borderRadius: BorderRadius.only(
+          //         bottomLeft: Radius.circular(15),
+          //         bottomRight: Radius.circular(15),
+          //       ),
+          //       // boxShadow: [
+          //       //   BoxShadow(
+          //       //     offset: Offset(0, 10),
+          //       //     // blurRadius: 50,
+          //       //     // color: kPrimaryColor.withOpacity(0.23),
+          //       //   ),
+          //       // ],
+          //     ),
+              // child: Row(
+              //   // mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     Align(
+              //       alignment: Alignment.topLeft,
+              //       child: ElevatedButton(
+              //         onPressed: () {
+              //           Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //               builder: (context) => Category(
+              //                 id: id,
+              //               ),
+              //             ),
+              //           );
+              //         },
+              //         child: Center(
+              //           child: Icon(Icons.shop)
+              //           ),
+              //         // Text('Commander',style: TextStyle(fontSize: 12),textAlign: TextAlign.center,),
+              //         style: ElevatedButton.styleFrom(
+              //             shape: RoundedRectangleBorder(
+              //               borderRadius: BorderRadius.circular(12),
+                  
+              //               // <-- Radius
+              //             ),
+              //             primary: Color.fromRGBO(122, 211, 207, 1)),
+              //       ),
+              //     ),
                   // SizedBox(height: 5,),
-                  Padding(
-                    padding: const EdgeInsets.only(top:15.0,left:12),
-                    child: Flexible(
-                 
-                    child:RichText(
-                      overflow: TextOverflow.visible,
-                      text: TextSpan(
-                        children: [
-                          
-                          TextSpan(
-                              text: "$title\n".toUpperCase(),
-                              style: TextStyle(color: Colors.black,fontSize:17)),
-                          // TextSpan(
-                          //   text: "$country".toUpperCase(),
-                          //   style: TextStyle(
-                          //     color: kPrimaryColor.withOpacity(0.5),
-                          //   ),
-                          // ),
-                        ],
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 15.0, left: 12),
+                      child: Flexible(
+                        child: RichText(
+                          overflow: TextOverflow.visible,
+                          text: TextSpan(
+                            children: [
+                              WidgetSpan(child: GestureDetector(child: Icon(Icons.shop),onTap:(){ Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Category(
+                                id: id,
+                              ),
+                            ),
+                          );})),
+                              TextSpan(
+                                  text: "$title\n".toUpperCase(),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 17)),
+                              // TextSpan(
+                              //   text: "$country".toUpperCase(),
+                              //   style: TextStyle(
+                              //     color: kPrimaryColor.withOpacity(0.5),
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                      ),
                   ),
                   // Spacer(),
                   // RaisedButton(
@@ -178,7 +190,7 @@ class RecomendPlantCard extends StatelessWidget {
                   //   onPressed: () {
 
                   // },),
-                  
+
                   // Text(
                   //   '\$$price',
                   //   style: Theme.of(context)
@@ -187,11 +199,13 @@ class RecomendPlantCard extends StatelessWidget {
                   //       .copyWith(color: kPrimaryColor),
                   // )
                 ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
+      )
+      );
+              
+        //    ),
+      //    )
+       // ],
+     // ),
+   // );
   }
 }

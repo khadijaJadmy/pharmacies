@@ -14,6 +14,8 @@ import 'package:pharmacie/ui/welcome.dart';
 import 'bloc/pharmacy.state.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'enums/enums.dart';
+import 'livreur/detailCommande.dart';
+import 'livreur/listCommande.dart';
 
 // void main() {
 //   GetIt.instance.registerLazySingleton(() => new PharmaciesRepository());
@@ -51,7 +53,8 @@ class MyApp extends StatelessWidget {
 
         '/pharmacies' :(context)=>
         //Body()
-        SplashScreen()
+        // Livreurstate()
+        SplashScreen(),
 
 
       },
@@ -59,4 +62,3 @@ class MyApp extends StatelessWidget {
     ));
   }
 }
-

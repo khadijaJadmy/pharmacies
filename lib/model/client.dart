@@ -5,7 +5,9 @@ class Client {
      String email;
      String adress;
      String phone;
- 
+  String ville;
+  String postalCode;
+  // String 
 
-  Client({  this.name,   this.email,   this.adress,this.phone});
+  Client({  this.name,   this.email,   this.adress,this.phone,this.postalCode,this.ville});
 }

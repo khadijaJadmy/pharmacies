@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pharmacie/auth/authentification.dart';
 import 'package:pharmacie/firestore/auth.dart';
+import 'package:pharmacie/livreur/listCommande.dart';
 import 'package:pharmacie/model/client.dart';
 import 'package:pharmacie/ui/anotherhome/screens/home/components/body.dart';
 import 'package:pharmacie/ui/home/home.dart';
@@ -38,9 +39,7 @@ class _InscriptionState extends State<Inscription> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      _statutField.text = 'Client';
-    });
+  
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -113,12 +112,13 @@ class _InscriptionState extends State<Inscription> {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                    // Color.fromRGBO(155, 178, 161, 1),
-                    Color.fromRGBO(72, 219, 211, 0),
-                    Color.fromRGBO(1, 177, 174, 1),
-                    Color.fromRGBO(72, 219, 211, 0),
-                  ])),
+                  //     gradient: LinearGradient(colors: [
+                  //   // Color.fromRGBO(155, 178, 161, 1),
+                  //   Color.fromRGBO(72, 219, 211, 0),
+                  //   Color.fromRGBO(1, 177, 174, 1),
+                  //   Color.fromRGBO(72, 219, 211, 0),
+                  // ])
+                  ),
                   // margin: EdgeInsets.only(top: 130),
                   child: Center(
                     child: Text(
@@ -170,13 +170,7 @@ class _InscriptionState extends State<Inscription> {
                                 child: TextFormField(
                                   controller: _fullnameField,
                                   obscureText: false,
-                                  validator: (v) {
-                                    if (v.isValidName) {
-                                      return null;
-                                    } else {
-                                      return 'Veuillez renseigner votre nom';
-                                    }
-                                  },
+                                 
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
                                       hintText: "Nom et prénom*",
@@ -349,7 +343,7 @@ class _InscriptionState extends State<Inscription> {
                                 builder: (context) =>
                                     // ProfessorsPage()
                                     //MyNavigationBar(),
-                                        Body(),
+                                        _statutField.text=='Livreur'?Livreurstate():Body(),
                                     //HomeScreen(),
                               ),
                             );
