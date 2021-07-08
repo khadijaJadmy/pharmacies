@@ -4,10 +4,10 @@ class CommandeModel {
   String fullName;
   String adresse;
   String phoneNumber;
-  String numCommande;
-  List<MedicamentModel> mediList;
+  String qrcode;
   String statut;
   String uid;
-  String qrcode;
-  CommandeModel({this.numCommande, this.adresse, this.mediList, this.uid, this.statut});
+  String numCommande;
+  List<MedicamentModel> mediList;
+  CommandeModel({this.statut,this.uid,this.numCommande,this.adresse, this.qrcode,this.mediList});
 }

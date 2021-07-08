@@ -6,6 +6,7 @@ import 'package:pharmacie/categories/camera.dart';
 import 'package:pharmacie/categories/commandeForm.dart';
 import 'package:pharmacie/categories/qrScan.dart';
 import 'package:pharmacie/categories/scanForm.dart';
+import 'package:pharmacie/ui/anotherhome/screens/details/components/body.dart';
 
 class Category extends StatefulWidget {
   String id;
@@ -41,11 +42,30 @@ void initState() {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+     appBar: AppBar(
+        leading: BackButton(
+          color: Colors.black54,
+          onPressed: () {
+            // Navigator.of(context).pop();
+            Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Body(),
+                            ));
+          },
+        ),
+        
+      ),
         body: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
             Widget>[
+               Container(
+            child:Wrap(children:[ Text("Choisir une forme pour commande",style:TextStyle(fontSize: 20,color: Color.fromRGBO(1, 177, 174, 1)))])
+          ),
+          SizedBox(height: 10,),
       Row(
         //ROW 1
         children: <Widget>[
+         
           Container(
             margin:
                 EdgeInsets.only(left: 50, top: 8.0, bottom: 8.0, right: 12.0),

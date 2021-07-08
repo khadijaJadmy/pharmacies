@@ -26,6 +26,7 @@ class _QRCodePageState extends State<QRCodePage> {
   TextEditingController name;
   TextEditingController price;
   TextEditingController forme;
+  TextEditingController dosage;
   TextEditingController ppt;
 
   String quantite;
@@ -54,6 +55,8 @@ class _QRCodePageState extends State<QRCodePage> {
     final yourDataModel = itemsFromJson(jsonString);
 
     for (int i = 0; i < yourDataModel.length; i++) {
+      print(result);
+      print(yourDataModel[i].code);
       if (yourDataModel[i].code == result) {
         print("NOMMMMMMMMM");
         print(yourDataModel[i].nom);
@@ -73,6 +76,8 @@ class _QRCodePageState extends State<QRCodePage> {
       Map<String, dynamic> medData = {
         "medicamentName": name.text,
         "quantite": quantite,
+        "dosage": dosage.text,
+        "forme": forme.text,
       };
       print("DAAAAAAAAAAATAAAAAAAA");
       print(medData);
@@ -114,6 +119,7 @@ class _QRCodePageState extends State<QRCodePage> {
         setState(() {
           medicaments.add(medicament);
         });
+
         // String dataM =
         //     " Medicament :${medicament.nomMedicament} , quantité: ${medicament.quantite} \n";
         // print("dokhlo");
@@ -132,8 +138,15 @@ class _QRCodePageState extends State<QRCodePage> {
     String listData =
         widget.listClient + "Infos Sur la commande \n " + MaList.join("\n");
     print('MALISTTTTTTTTTTTTTTTTTTT' + listData);
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => GeneratePage(listData)));
+    FirebaseFirestore.instance
+        .collection('commande')
+        .doc(widget.commandeId)
+        .update({'qrCode': listData});
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            // builder: (context) => GeneratePage(listData, commandeId)));
+            builder: (context) => GeneratePage(listData, widget.commandeId)));
   }
 
   Future scanQR() async {
@@ -181,6 +194,8 @@ class _QRCodePageState extends State<QRCodePage> {
                         name = TextEditingController(text: items[index].nom);
                         price = TextEditingController(text: items[index].ppv);
                         forme = TextEditingController(text: items[index].forme);
+                        dosage =
+                            TextEditingController(text: items[index].dosage1);
                         ppt = TextEditingController(
                             text: items[index].presentation);
                         return Column(
@@ -229,6 +244,17 @@ class _QRCodePageState extends State<QRCodePage> {
                                         TextStyle(fontWeight: FontWeight.w500)),
                                 subtitle: TextFormField(
                                   controller: ppt,
+                                )),
+                            new ListTile(
+                                leading: const Icon(Icons.description),
+                                // title: new Text(items[index].nom),
+
+                                // trailing: new Text(items[index].ppv),
+                                title: Text('Dosage',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500)),
+                                subtitle: TextFormField(
+                                  controller: dosage,
                                 )),
                             new Container(
                                 child: Form(

@@ -83,6 +83,8 @@ class MedicamentFormScreenState extends State<MedicamentFormScreen> {
         setState(() {
           medicaments.add(medicament);
         });
+        print("CMAS CME");
+        print(medicaments);
         // String dataM =
         //     " Medicament :${medicament.nomMedicament} , quantité: ${medicament.quantite} \n";
         // print("dokhlo");
@@ -100,19 +102,15 @@ class MedicamentFormScreenState extends State<MedicamentFormScreen> {
 
     String listData =
         widget.jsonString + "Infos Sur la commande \n " + MaList.join("\n");
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => GeneratePage(listData)));
-
-// To save qr code
-
-    //       final firestoreInstance = FirebaseFirestore.instance;
-
-    // firestoreInstance.collection("commande").doc(widget.commandeId).set(
-    // {
-    //   "qrcode" : listData,
-
-    //   }
-    // );
+    FirebaseFirestore.instance
+        .collection('commande')
+        .doc(widget.commandeId)
+        .update({'qrCode': listData});
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            // builder: (context) => GeneratePage(listData, commandeId)));
+            builder: (context) => GeneratePage(listData, widget.commandeId)));
   }
 
   createCommandeMed() {
@@ -122,10 +120,14 @@ class MedicamentFormScreenState extends State<MedicamentFormScreen> {
       });
 
       Map<String, dynamic> medData = {
-        "medicamentName": medicamentName,
-        "quantite": quantite,
-        "dosage": dosage,
-        "forme": forme
+        // "medicamentName": medicamentName,
+        // "quantite": quantite,
+        // "dosage": dosage,
+        // "forme": forme
+        "medicamentName": nameController.text,
+        "quantite": quantityController.text,
+        "dosage": dosageController.text,
+        "forme": formController.text
       };
 
       // String data =
@@ -134,10 +136,11 @@ class MedicamentFormScreenState extends State<MedicamentFormScreen> {
       databaseService.addMedData(medData, widget.commandeId).then((value) {
         setState(() {
           isLoading = false;
-          // dosageController.text="";
-          // formController.text="";
-          //  quantityController.text="";
-          //    nameController.text="";
+
+          dosageController.clear();
+          formController.clear();
+          quantityController.clear();
+          nameController.clear();
         });
 
         // Navigator.pushReplacement(
@@ -149,7 +152,6 @@ class MedicamentFormScreenState extends State<MedicamentFormScreen> {
     }
   }
 
-  void save() {}
   Widget _builmedicamentName() {
     return TextFormField(
       controller: nameController,
@@ -163,9 +165,9 @@ class MedicamentFormScreenState extends State<MedicamentFormScreen> {
 
         return null;
       },
-      onChanged: (String value) {
-        medicamentName = value;
-      },
+      // onChanged: (String value) {
+      //   medicamentName = value;
+      // },
     );
   }
 
@@ -182,9 +184,9 @@ class MedicamentFormScreenState extends State<MedicamentFormScreen> {
 
         return null;
       },
-      onChanged: (String value) {
-        quantite = value;
-      },
+      // onChanged: (String value) {
+      //   quantite = value;
+      // },
     );
   }
 
@@ -200,9 +202,9 @@ class MedicamentFormScreenState extends State<MedicamentFormScreen> {
 
         return null;
       },
-      onChanged: (String value) {
-        dosage = value;
-      },
+      // onChanged: (String value) {
+      //   dosage = value;
+      // },
     );
   }
 
@@ -218,9 +220,9 @@ class MedicamentFormScreenState extends State<MedicamentFormScreen> {
 
         return null;
       },
-      onChanged: (String value) {
-        forme = value;
-      },
+      // onChanged: (String value) {
+      //   forme = value;
+      // },
     );
   }
 

@@ -30,7 +30,7 @@ class ScanFormState extends State<ScanForm> {
   String phoneNumber;
   ClientModel client;
   DatabaseService databaseService = new DatabaseService();
-    TextEditingController adressInitialController=new TextEditingController();
+  TextEditingController adressInitialController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool circular = false;
   bool isLoading;
@@ -61,8 +61,10 @@ class ScanFormState extends State<ScanForm> {
       Map<String, String> profData = {
         "idClient": uid,
         "numCommande": commandeId,
-        "adress":  widget.adress_initial==null?adresse:widget.adress_initial,
-        "idPharmacy": widget.id
+        "adress":
+            widget.adress_initial == null ? adresse : widget.adress_initial,
+        "idPharmacy": widget.id,
+        "qrCode": ""
       };
       DocumentSnapshot ds =
           await Firestore.instance.collection('Client').document(uid).get();
@@ -126,9 +128,8 @@ class ScanFormState extends State<ScanForm> {
 
   Widget _buildAdress() {
     return TextFormField(
-       initialValue: widget.adress_initial,
+      initialValue: widget.adress_initial,
       decoration: InputDecoration(
-        
           labelText: 'Entrer une adresse de livraison ',
           icon: Icon(Icons.home_work_outlined)),
       validator: (String value) {

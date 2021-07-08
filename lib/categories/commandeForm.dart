@@ -9,7 +9,6 @@ import 'package:pharmacie/categories/medicament.dart';
 import 'package:pharmacie/categories/model/client.dart';
 import 'package:random_string/random_string.dart';
 
-
 class FormScreen extends StatefulWidget {
   final String id;
   // ignore: non_constant_identifier_names
@@ -22,14 +21,13 @@ class FormScreen extends StatefulWidget {
   }
 }
 
-
-
 class FormScreenState extends State<FormScreen> {
   String fullName;
   String adresse;
   String medicamentName;
   String quantite;
   String phoneNumber;
+  String qr;
   ClientModel client;
   DatabaseService databaseService = new DatabaseService();
   final _formKey = GlobalKey<FormState>();
@@ -39,8 +37,8 @@ class FormScreenState extends State<FormScreen> {
   String commandeId;
   String userUid;
   final FirebaseAuth auth = FirebaseAuth.instance;
-  TextEditingController adressInitialController=new TextEditingController();
-  
+  TextEditingController adressInitialController = new TextEditingController();
+
   // void getUserUid() {
   // //   User myUser = FirebaseAuth.instance.currentUser;
   // //   userUid = myUser.uid;
@@ -65,14 +63,17 @@ class FormScreenState extends State<FormScreen> {
         "idClient": uid,
         "idPharmacy": widget.id,
         "numCommande": commandeId,
-        "adress": widget.adress_initial==null?adresse:widget.adress_initial,
+        "adress":
+            widget.adress_initial == null ? adresse : widget.adress_initial,
+        "qrCode": " ",
+        "statut":"En cours"
       };
       DocumentSnapshot ds =
           await Firestore.instance.collection('Client').document(uid).get();
       name = ds.data()['name'];
       adresse = ds.data()['adress'];
       phone = ds.data()['phone'];
- 
+
       List<String> MaList = List();
       MaList.add("Name:" +
           name +

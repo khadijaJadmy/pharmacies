@@ -5,6 +5,7 @@ import 'package:pharmacie/auth/authentification.dart';
 import 'package:pharmacie/bloc/pharmacy.action.dart';
 import 'package:pharmacie/bloc/pharmacy.bloc.dart';
 import 'package:pharmacie/bloc/pharmacy.state.dart';
+import 'package:pharmacie/categories/commandeEnCours.dart';
 import 'package:pharmacie/enums/enums.dart';
 import 'package:pharmacie/ui/anotherhome/constants.dart';
 import 'package:pharmacie/ui/map/map2.dart';
@@ -119,10 +120,11 @@ class Body extends StatelessWidget {
                                 //    );
                                 print("YOU HAVE JUST TAPPED SOMETHING");
                                 // searchController.text=value;
-                                context
-                                    .read<PharmaciesBloc>()
-                                    .add(LoadPharmaciesBySearchName(value));
-                                // // LoadPharmaciesBySearchName();
+                                // context
+                                //     .read<PharmaciesBloc>()
+                                //     .add(LoadPharmaciesBySearchName(value));
+                                // LoadPharmaciesBySearchName(value);
+                                print(value);
                               },
                               decoration: InputDecoration(
                                 hintText: "Search",
@@ -225,7 +227,7 @@ class Body extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MapView(),
+                              builder: (context) => EnCoursCommande(),
                             ));
                       }),
                   const SizedBox(height: 20),
